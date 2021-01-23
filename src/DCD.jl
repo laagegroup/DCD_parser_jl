@@ -172,7 +172,7 @@ function Header(io::IO)
     stepincrement = read(io, Int32)
     laststep = read(io, Int32)
     skip(io, 20)
-    δt = read(io, Float32) * 48.88821
+    δt = read(io, Float32)
     hascell = read(io, Int32)
     skip(io, 216)
     natoms = read(io, Int32)

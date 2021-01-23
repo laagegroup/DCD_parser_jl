@@ -1,7 +1,7 @@
 name = "DCD"
-uuid = "2e9a488b-69b9-40bd-9729-5698005df8c5"
-authors = ["Michael von Domaros <mvondomaros@gmail.com>"]
-version = "0.1.0"
+uuid = "cc05301c-b019-4863-b507-407516a92140"
+authors = ["Axel Gomez"]
+version = "0.2.0"
 
 [deps]
 Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"
