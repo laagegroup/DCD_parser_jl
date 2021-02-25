@@ -3,10 +3,10 @@ A Julia package for reading DCD trajectory files.
 
 This package is in an early stage. It currently supports only DCD files written by Lammps. This package is a copy of the original package: https://github.com/mvondomaros/DCD.jl.git for NAMD.
 
-## Installation
+## Installation (with set-up ssh keys)
 
 ````julia
-pkg> add https://gitlab.com/axel.gomez/dcd-lammps.git
+pkg> add git@gitlab.com:axel.gomez/dcd-lammps.git
 ````
 
 ## Usage
