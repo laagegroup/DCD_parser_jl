@@ -253,7 +253,7 @@ Stores simulation time, unit cell information and positions.
 @with_kw struct Frame
     time::Float64
     cell::Union{Vector{Float64},Nothing}
-    positions::Array{Float32,2}
+    positions::Array{Float64,2}
 end
 
 """
@@ -273,7 +273,7 @@ function Frame(f::File, index::Int64)
     else
         cell = nothing
     end
-    positions = Array{Float32,2}(undef, 3, natoms(f))
+    positions = Array{Float64,2}(undef, 3, natoms(f))
     for dim in 1:3
         skip(io, 4)
         for iatom in 1:natoms(f)
