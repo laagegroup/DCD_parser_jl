@@ -22,7 +22,7 @@ Load a dcd trajectory from stream `io`.
 """
 function load_dcd(io::IO)
     checkmagic(io)
-    File(io)
+    FileDCD(io)
 end
 
 """
@@ -37,11 +37,11 @@ function checkmagic(io::IO)
 end
 
 """
-    @with_kw struct File
+    @with_kw struct FileDCD
 
 Stores information about a dcd trajectory file.
 """
-@with_kw struct File
+@with_kw struct FileDCD
     io::IO
     natoms::Int64
     nframes::Int64
@@ -52,13 +52,13 @@ Stores information about a dcd trajectory file.
 end
 
 """
-    File(io::IO)
+    FileDCD(io::IO)
 
-Construct a [`DCD.File`](@ref) object from an IO stream `io`.
+Construct a [`DCD.FileDCD`](@ref) object from an IO stream `io`.
 """
-function File(io::IO)
+function FileDCD(io::IO)
     header = Header(io)
-    File(
+    FileDCD(
         io=io,
         natoms=natoms(header),
         nframes=nframes(header),
@@ -70,76 +70,76 @@ function File(io::IO)
 end
 
 """
-    iostream(f::File)
+    iostream(f::FileDCD)
 
-Get the [`IOStream`](@ref) associated with the [`DCD.File`](@ref) object.
+Get the [`IOStream`](@ref) associated with the [`DCD.FileDCD`](@ref) object.
 """
-iostream(f::File) = f.io
+iostream(f::FileDCD) = f.io
 
 """
-    natoms(f::File)
+    natoms(f::FileDCD)
 
 Get the number of atoms.
 """
-natoms(f::File) = f.natoms
+natoms(f::FileDCD) = f.natoms
 
 """
-    nframes(f::File)
+    nframes(f::FileDCD)
 
 Get the number of frames.
 """
-nframes(f::File) = f.nframes
+nframes(f::FileDCD) = f.nframes
 
 """
-    timestep(f::File)
+    timestep(f::FileDCD)
 
 Get the time passed between frames.
 """
-timestep(f::File) = f.δt
+timestep(f::FileDCD) = f.δt
 
 """
-    hascell(f::File)
+    hascell(f::FileDCD)
 
 Check if the dcd trajectory file has unit cell information.
 """
-hascell(f::File) = f.hascell
+hascell(f::FileDCD) = f.hascell
 
 """
-    nbytes_header(f::File)
+    nbytes_header(f::FileDCD)
 
 Get the number of bytes of the header.
 """
-nbytes_header(f::File) = f.nbytes_header
+nbytes_header(f::FileDCD) = f.nbytes_header
 
 """
-    nbytes_frame(f::File)
+    nbytes_frame(f::FileDCD)
 
 Get the number of bytes of a single frame.
 """
-nbytes_frame(f::File) = f.nbytes_frame
+nbytes_frame(f::FileDCD) = f.nbytes_frame
 
 """
-    Base.eltype(::Type{File})
+    Base.eltype(::Type{FileDCD})
 
-[`DCD.File`](@ref) objects are iterators over [`DCD.Frame`](@ref) objects.
+[`DCD.FileDCD`](@ref) objects are iterators over [`DCD.FrameDCD`](@ref) objects.
 """
-Base.eltype(::Type{File}) = Frame
+Base.eltype(::Type{FileDCD}) = FrameDCD
 
-function Base.getindex(f::File, i::Int64)
+function Base.getindex(f::FileDCD, i::Int64)
     1 <= i <= f.nframes || throw(BoundsError(f, i))
-    return Frame(f, i)
+    return FrameDCD(f, i)
 end
-Base.getindex(f::File, i::Number) = f[convert(Int64, i)]
-Base.getindex(f::File, I) = [f[i] for i in I]
-Base.firstindex(f::File) = 1
-Base.lastindex(f::File) = f.nframes
-Base.length(f::File) = f.nframes
+Base.getindex(f::FileDCD, i::Number) = f[convert(Int64, i)]
+Base.getindex(f::FileDCD, I) = [f[i] for i in I]
+Base.firstindex(f::FileDCD) = 1
+Base.lastindex(f::FileDCD) = f.nframes
+Base.length(f::FileDCD) = f.nframes
 
-function Base.iterate(f::File, frame::Int64=1)
+function Base.iterate(f::FileDCD, frame::Int64=1)
     if frame > nframes(f)
         return nothing
     else
-        return Frame(f, frame), frame + 1
+        return FrameDCD(f, frame), frame + 1
     end
 end
 
@@ -234,11 +234,11 @@ Get the number of bytes of the header.
 nbytes_frame(h::Header)::Int64 = hascell(h) ? natoms(h) * 12 + 24 + 56 : natoms(h) * 12 + 24
 
 """
-    seekframe(f::File, index::Int64)
+    seekframe(f::FileDCD, index::Int64)
 
 Move the file's [`IOStream`](@ref) to the position of the indicated frame.
 """
-function seekframe(f::File, index::Int64)
+function seekframe(f::FileDCD, index::Int64)
     1 <= index <= f.nframes || throw(BoundsError(f, index))
     pos = nbytes_header(f) + (index - 1) * nbytes_frame(f)
     seek(f.io, pos)
@@ -246,22 +246,22 @@ end
 
 
 """
-    @with_kw struct Frame
+    @with_kw struct FrameDCD
 
 Stores simulation time, unit cell information and positions.
 """
-@with_kw struct Frame
+@with_kw struct FrameDCD
     time::Float64
     cell::Union{Vector{Float64},Nothing}
     positions::Array{Float64,2}
 end
 
 """
-    Frame(f::File, index::Int64)
+    FrameDCD(f::FileDCD, index::Int64)
 
-Construct a [`DCD.Frame`](@ref) object from a [`DCD.File`](@ref) `f` with the specified `index`.
+Construct a [`DCD.FrameDCD`](@ref) object from a [`DCD.FileDCD`](@ref) `f` with the specified `index`.
 """
-function Frame(f::File, index::Int64)
+function FrameDCD(f::FileDCD, index::Int64)
     seekframe(f, index)
     time = index * timestep(f)
     io = iostream(f)
@@ -282,24 +282,24 @@ function Frame(f::File, index::Int64)
         skip(io, 4)
     end
 
-    Frame(time=time, cell=cell, positions=positions)
+    FrameDCD(time=time, cell=cell, positions=positions)
 end
 
 """
-    timepassed(f::Frame)
+    timepassed(f::FrameDCD)
 
 Get the simulation time that has passed since the beginning of the simulation.
 """
-timepassed(f::Frame) = f.time
+timepassed(f::FrameDCD) = f.time
 
 """
-    positions(f::Frame)
+    positions(f::FrameDCD)
 
 Get the current positions.
 """
-positions(f::Frame) = f.positions
+positions(f::FrameDCD) = f.positions
 
-function cell(f::Frame)
+function cell(f::FrameDCD)
     cell = zeros(6)
     cell[1] = f.cell[1]
     cell[2] = f.cell[3]
