@@ -1,7 +1,7 @@
 name = "DCD"
 uuid = "cc05301c-b019-4863-b507-407516a92140"
 authors = ["Axel Gomez"]
-version = "0.2.1"
+version = "0.2.2"
 
 [deps]
 Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"
