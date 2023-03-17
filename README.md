@@ -2,7 +2,8 @@
 
 <!-- PROJECT SHIELDS -->
 
-[![GNU AGPL v3.0 License][license-shield]][license-url]
+[![GNU AGPL v3.0 License][license-shield]][license-url] 
+![VERSION](https://img.shields.io/badge/version-0.2.2-blue)
 
 <!-- TABLE OF CONTENTS -->
 
