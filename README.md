@@ -61,6 +61,13 @@ pkg> add git@github.com:laagegroup/DCD_parser_jl.git
 
 <div id="usage"></div>
 
+### Installation (with https RECOMMENDED)
+
+You can directly install this parser via https by running (from julia):
+```julia
+pkg> add https://github.com/laagegroup/DCD_parser_jl.git
+```
+
 ## Usage
 
 This package can be used in the Julia REPL or within a Julia script. Here is an example of the main features:
