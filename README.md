@@ -46,8 +46,6 @@ This package currently supports only DCD files written by Lammps.
 
 This package is a Julia parser for DCD files written by Lammps. It needs Julia 1.5 or above.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 <div id="installation"></div>
 
 ### Installation (with set-up ssh keys)
@@ -57,16 +55,17 @@ Adding private packages to Julia requires a password-less access (see the [manua
 ````julia
 pkg> add git@github.com:laagegroup/DCD_parser_jl.git
 ````
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<div id="usage"></div>
 
 ### Installation (with https RECOMMENDED)
 
-You can directly install this parser via https by running (from julia):
+You can directly install this parser via https by running (from Julia):
 ```julia
 pkg> add https://github.com/laagegroup/DCD_parser_jl.git
 ```
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<div id="usage"></div>
 
 ## Usage
 
